@@ -75,7 +75,7 @@ jobs:
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./IaC/aksautomatic/main.picep
+        template: ./IaC/aksautomatic/main.bicep
         parameters: clusterName=${{ secrets.CLUSTER_NAME }}
         
         
