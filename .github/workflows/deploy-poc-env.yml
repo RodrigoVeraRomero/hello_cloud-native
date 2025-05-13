@@ -6,7 +6,6 @@ on:
 env:
   image_name: oapi
   tag: latest
-  environment: Build
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,7 +44,7 @@ jobs:
           
   build-and-push-image:
     runs-on: ubuntu-latest
-    environment: ${{ env.environment }}
+    environment: Build
     if: ${{ success() }}
     needs: [enable-observability,create-acr,update-aks]
     steps:
