@@ -18,9 +18,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-03-02-preview' = {
 	count: 3
       }
     ]
-    securityProfile: {
-      disableSsh: true
-    }
   }
   identity: {
     type: 'SystemAssigned'
