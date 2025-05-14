@@ -133,6 +133,8 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - uses: Azure/use-kubelogin@v1
+      with:
+        kubelogin-version: 'v0.0.24'
     - name: Azure Login
       uses: azure/login@v1
       with:
