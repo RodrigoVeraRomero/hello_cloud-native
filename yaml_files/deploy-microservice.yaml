@@ -21,7 +21,7 @@ spec:
         app: api
     spec:
       containers:
-      - image: oaworkshop.azurecr.io/oapi:7999
+      - image: acrdemorvr1.azurecr.io/oapi:latest
         name: api
         imagePullPolicy: Always
         ports:
