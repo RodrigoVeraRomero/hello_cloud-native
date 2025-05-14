@@ -132,6 +132,7 @@ jobs:
     needs: [update-aks,build-and-push-image]
     steps:
     - uses: actions/checkout@master
+    - uses: Azure/use-kubelogin@v1
     - name: Azure Login
       uses: azure/login@v1
       with:
