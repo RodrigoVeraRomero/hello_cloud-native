@@ -121,7 +121,7 @@ jobs:
             az resource create --resource-type Microsoft.OperationalInsights/workspaces --name ${{ secrets.WORKSPACE_NAME }} --resource-group ${{ secrets.AZURE_RG }} --location ${{ secrets.AZURE_REGION }} --properties '{}' -o table
             az extension add --name aks-preview
             az extension update --name aks-preview 
-            sleep 60 # Wait to ensure the extension is fully installed
+            sleep 120 # Wait to ensure the extension is fully installed
             WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces --resource-group ${{ secrets.AZURE_RG }} --name ${{ secrets.WORKSPACE_NAME }} --query "id" -o tsv)
             echo $WORKSPACE_ID
             az aks enable-addons --addon monitoring --name ${{ secrets.CLUSTER_NAME }} --resource-group ${{ secrets.AZURE_RG }} --workspace-resource-id $WORKSPACE_ID
