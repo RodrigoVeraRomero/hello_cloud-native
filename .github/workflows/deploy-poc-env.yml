@@ -112,12 +112,15 @@ jobs:
       uses: Azure/cli@v2.1.0
       with:
         inlineScript: |
-          az resource create --resource-type Microsoft.OperationalInsights/workspaces --name ${{ secrets.WORKSPACE_NAME }} --resource-group ${{ secrets.AZURE_RG }} --location ${{ secrets.AZURE_REGION }} --properties '{}' -o table
-          az extension add --name aks-preview
-          az extension update --name aks-preview 
-          WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces --resource-group ${{ secrets.AZURE_RG }} --name ${{ secrets.WORKSPACE_NAME }} --query "id" -o tsv)
-          echo $WORKSPACE_ID
-          az aks enable-addons --addon monitoring --name ${{ secrets.CLUSTER_NAME }} --resource-group ${{ secrets.AZURE_RG }} --workspace-resource-id $WORKSPACE_ID
+          ADDON_STATUS=$(az aks show --name ${{ secrets.CLUSTER_NAME }} --resource-group ${{ secrets.AZURE_RG }} --query "addonProfiles.omsagent.enabled" -o tsv)
+          if [ "$ADDON_STATUS" != "true" ]; then
+            az resource create --resource-type Microsoft.OperationalInsights/workspaces --name ${{ secrets.WORKSPACE_NAME }} --resource-group ${{ secrets.AZURE_RG }} --location ${{ secrets.AZURE_REGION }} --properties '{}' -o table
+            az extension add --name aks-preview
+            az extension update --name aks-preview 
+            WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces --resource-group ${{ secrets.AZURE_RG }} --name ${{ secrets.WORKSPACE_NAME }} --query "id" -o tsv)
+            echo $WORKSPACE_ID
+            az aks enable-addons --addon monitoring --name ${{ secrets.CLUSTER_NAME }} --resource-group ${{ secrets.AZURE_RG }} --workspace-resource-id $WORKSPACE_ID
+          fi
   
   deploy-microservice:
     runs-on: ubuntu-latest
