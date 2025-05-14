@@ -91,9 +91,11 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Udpate AKS with ACR
-      uses: Azure/cli@v1
+      uses: Azure/cli@v2.1.0
       with:
         inlineScript: |
+           az extension add --name aks-preview
+           az extension update --name aks-preview 
            az aks update -g ${{ secrets.AZURE_RG }} -n ${{ secrets.CLUSTER_NAME }} --attach-acr ${{ secrets.ACR }}
           
           
