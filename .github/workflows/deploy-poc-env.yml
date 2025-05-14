@@ -25,6 +25,22 @@ jobs:
         inlineScript: |
           az group create --location ${{ secrets.AZURE_REGION }} --name ${{ secrets.AZURE_RG }}
           
+  create-storage-account:
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    needs: create-resource-group
+    steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Create Storage Account
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az storage account create --name ${{ secrets.STORAGE_ACCOUNT_NAME }} --resource-group ${{ secrets.AZURE_RG }} --location ${{ secrets.AZURE_REGION }} --sku Standard_LRS
+          
   create-acr:
     runs-on: ubuntu-latest
     if: ${{ success() }}
@@ -162,5 +178,5 @@ jobs:
         with:
           issue-title: "Deployment Failure: PoC Env - ${{ github.sha }}"
           issue-body: "Validate orchestration workflow"
-          repo-token: ${{secrets.GITHUB_TOKEN}}       
-          
+          repo-token: ${{secrets.GITHUB_TOKEN}}
+
