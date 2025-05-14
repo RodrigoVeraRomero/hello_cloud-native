@@ -11,7 +11,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-03-02-preview' = {
 	name: 'Automatic'
   }
   properties: {
-    disableLocalAccounts: false
     agentPoolProfiles: [
       {
         name: 'systempool'
